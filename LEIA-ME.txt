@@ -1,0 +1,26 @@
+╔══════════════════════════════════════════════════╗
+║      EDITOR DE CONTRATO — SAÚDE GI              ║
+╚══════════════════════════════════════════════════╝
+
+REQUISITOS:
+  • Python 3 instalado no computador
+    (verifique: abra o terminal e digite "python --version" ou "python3 --version")
+
+COMO USAR:
+  Windows:
+    1. Clique duas vezes em "INICIAR_WINDOWS.bat"
+    2. O navegador abrirá automaticamente
+    3. Preencha os dados e clique em "Gerar e baixar"
+
+  Mac / Linux:
+    1. Abra o Terminal nesta pasta
+    2. Execute: python3 servidor.py
+    3. O navegador abrirá automaticamente
+
+ARQUIVOS:
+  • contrato_modelo.docx  → Seu contrato original (não edite)
+  • app_contrato.html     → Interface do app
+  • servidor.py           → Servidor local (não edite)
+
+SUPORTE:
+  Em caso de dúvidas, entre em contato.

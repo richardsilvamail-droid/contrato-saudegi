@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor de Contrato — Saúde GI</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #222; min-height: 100vh; }
+
+  header { background: linear-gradient(135deg, #1a6fc4, #2d9cdb); color: #fff; padding: 20px 32px; display: flex; align-items: center; gap: 14px; }
+  header .icon { font-size: 32px; }
+  header h1 { font-size: 20px; font-weight: 700; }
+  header p { font-size: 13px; opacity: .85; margin-top: 2px; }
+
+  .container { max-width: 780px; margin: 28px auto; padding: 0 16px 40px; }
+
+  .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.08); overflow: hidden; margin-bottom: 20px; }
+  .card-header { background: #f7f9fc; border-bottom: 1px solid #e8ecf0; padding: 14px 20px; font-weight: 700; font-size: 14px; color: #1a6fc4; display: flex; align-items: center; gap: 8px; }
+  .card-body { padding: 20px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .full { grid-column: 1 / -1; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 12px; font-weight: 600; color: #555; }
+  .field input { padding: 9px 12px; border: 1px solid #ccc; border-radius: 7px; font-size: 13px; outline: none; transition: border-color .2s; }
+  .field input:focus { border-color: #1a6fc4; box-shadow: 0 0 0 3px rgba(26,111,196,.1); }
+
+  .price-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .price-table th { background: #1a6fc4; color: #fff; padding: 9px 12px; text-align: left; }
+  .price-table th:last-child { text-align: right; width: 130px; }
+  .price-table tr:nth-child(even) td { background: #f7f9fc; }
+  .price-table .section-row td { background: #e8f0fa; font-weight: 700; color: #1a6fc4; padding: 7px 12px; font-size: 12px; letter-spacing: .04em; }
+  .price-table td { padding: 6px 10px; border-bottom: 1px solid #eee; }
+  .price-table td:last-child { text-align: right; }
+  .price-table input { border: 1px solid #ddd; border-radius: 5px; padding: 4px 8px; font-size: 12px; width: 110px; text-align: right; }
+  .price-table input:focus { border-color: #1a6fc4; outline: none; }
+
+  .btn-gerar { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border: none; border-radius: 10px; background: linear-gradient(135deg, #1a6fc4, #2d9cdb); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity .2s, transform .1s; margin-top: 6px; }
+  .btn-gerar:hover { opacity: .92; }
+  .btn-gerar:active { transform: scale(.98); }
+  .btn-gerar:disabled { background: #aaa; cursor: not-allowed; }
+
+  .status { text-align: center; margin-top: 12px; font-size: 13px; color: #555; min-height: 20px; }
+  .status.erro { color: #c0392b; }
+  .status.ok { color: #27ae60; font-weight: 600; }
+
+  @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .full { grid-column: 1; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="icon">📄</div>
+  <div>
+    <h1>Editor de Contrato — Saúde GI</h1>
+    <p>Preencha os dados do contratante, ajuste os preços e baixe o Word pronto.</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Dados da empresa -->
+  <div class="card">
+    <div class="card-header">🏢 Dados da empresa contratante</div>
+    <div class="card-body">
+      <div class="grid">
+        <div class="field full">
+          <label>Nome da empresa contratante</label>
+          <input type="text" id="nome" value="CONDOMINIO RESIDENCIAL LIMEIRA TENIS CLUBE">
+        </div>
+        <div class="field">
+          <label>CNPJ</label>
+          <input type="text" id="cnpj" value="05.066.792/0001-10">
+        </div>
+        <div class="field">
+          <label>E-mail da contratante</label>
+          <input type="text" id="email" value="carolinasindicalimeira@hotmail.com">
+        </div>
+        <div class="field full">
+          <label>Endereço completo (Rua, nº - Bairro, CEP)</label>
+          <input type="text" id="endereco" value="Av. Prof. Darcy Ribeiro, nº 100 - Bairro Morada da Colina, CEP: 27.512230">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de preços -->
+  <div class="card">
+    <div class="card-header">💰 Tabela de preços (Anexo I)</div>
+    <div class="card-body">
+      <table class="price-table">
+        <thead><tr><th>Descrição do Serviço</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr class="section-row"><td colspan="2">EXAMES</td></tr>
+          <tr><td>EXAME CLÍNICO</td><td><input type="text" data-key="EXAME CLÍNICO" value="R$ 40,00"></td></tr>
+          <tr><td>ACUIDADE VISUAL</td><td><input type="text" data-key="ACUIDADE VISUAL" value="R$ 20,00"></td></tr>
+          <tr><td>AUDIOMETRIA</td><td><input type="text" data-key="AUDIOMETRIA" value="R$ 30,00"></td></tr>
+          <tr><td>ESPIROMETRIA</td><td><input type="text" data-key="ESPIROMETRIA" value="R$ 30,00"></td></tr>
+          <tr><td>HEMOGRAMA</td><td><input type="text" data-key="HEMOGRAMA" value="R$ 17,00"></td></tr>
+          <tr><td>GLICEMIA</td><td><input type="text" data-key="GLICEMIA" value="R$ 11,00"></td></tr>
+          <tr><td>RETICULÓCITOS</td><td><input type="text" data-key="RETICULÓCITOS" value="R$ 8,00"></td></tr>
+          <tr><td>GAMA GT</td><td><input type="text" data-key="GAMA GT" value="R$ 8,00"></td></tr>
+          <tr><td>TGO</td><td><input type="text" data-key="TGO" value="R$ 8,00"></td></tr>
+          <tr><td>TGP</td><td><input type="text" data-key="TGP" value="R$ 8,00"></td></tr>
+          <tr><td>ACIDO TRANSMUCONICO</td><td><input type="text" data-key="ACIDO TRANSMUCONICO" value="R$ 56,00"></td></tr>
+          <tr><td>CARBOXI-HEMOGLOBINA</td><td><input type="text" data-key="CARBOXI-HEMOGLOBINA" value="R$ 44,00"></td></tr>
+          <tr><td>RX TÓRAX - OIT</td><td><input type="text" data-key="RX TÓRAX - OIT" value="R$ 44,00"></td></tr>
+          <tr><td>AVALIAÇÃO PSICOSSOCIAL (C/MÉDICO)</td><td><input type="text" data-key="AVALIAÇÃO PSICOSSOCIAL (C/MÉDICO)" value="R$ 65,00"></td></tr>
+
+          <tr class="section-row"><td colspan="2">PROGRAMAS, LAUDOS E GESTÃO SST</td></tr>
+          <tr><td>PGR - Programa de Gerenciamento de Riscos</td><td><input type="text" data-key="PGR-PROGRAMA DE GERENCIAMENTO DE RISCOS (AVAL. AMBIENTAIS NÃO INCLUSAS)" value="R$ 300,00"></td></tr>
+          <tr><td>PCMSO - Programa de Controle Médico de Saúde Ocupacional</td><td><input type="text" data-key="PCMSO-PROGRAMA DE CONTROLE MÉDICO DE SAÚDE OCUPACIONAL" value="R$ 300,00"></td></tr>
+          <tr><td>LTCAT - Laudo Técnico das Condições Ambientais</td><td><input type="text" data-key="LTCAT-LAUDO TÉCNICO DAS CONDIÇÕES AMBIENTAIS DE TRABALHO (AVAL. AMBIENTAIS NÃO INCLUSAS)" value="R$ 300,00"></td></tr>
+
+          <tr class="section-row"><td colspan="2">AVALIAÇÕES AMBIENTAIS</td></tr>
+          <tr><td>MONÓXIDO DE CARBONO</td><td><input type="text" data-key="MONÓXIDO DE CARBONO " value="R$ 685,00"></td></tr>
+          <tr><td>RUÍDO (AUDIODOSIMETRIA)</td><td><input type="text" data-key="RUÍDO (AUDIODOSIMETRIA)" value="R$ 255,00"></td></tr>
+          <tr><td>VIBRAÇÃO CORPO INTEIRO</td><td><input type="text" data-key="VIBRAÇÃO CORPO INTEIRO" value="R$ 775,00"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Botão -->
+  <button class="btn-gerar" id="btnGerar" onclick="gerarContrato()">
+    ⬇️ Gerar e baixar contrato Word (.docx)
+  </button>
+  <div class="status" id="status"></div>
+
+</div>
+
+<script>
+async function gerarContrato() {
+  const btn = document.getElementById('btnGerar');
+  const status = document.getElementById('status');
+  btn.disabled = true;
+  btn.textContent = '⏳ Gerando contrato...';
+  status.textContent = '';
+  status.className = 'status';
+
+  const precos = {};
+  document.querySelectorAll('[data-key]').forEach(el => {
+    precos[el.dataset.key] = el.value.trim();
+  });
+
+  const dados = {
+    nome: document.getElementById('nome').value.trim(),
+    cnpj: document.getElementById('cnpj').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    endereco: document.getElementById('endereco').value.trim(),
+    precos
+  };
+
+  try {
+    const resp = await fetch('/', { method: 'POST', body: JSON.stringify(dados), headers: {'Content-Type':'application/json'} });
+    const result = await resp.json();
+    if (result.ok) {
+      const bytes = Uint8Array.from(atob(result.file), c => c.charCodeAt(0));
+      const blob = new Blob([bytes], {type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const nomeArq = dados.nome.substring(0,30).replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+      a.download = `Contrato_${nomeArq}.docx`;
+      a.click();
+      URL.revokeObjectURL(url);
+      status.textContent = '✅ Contrato gerado com sucesso!';
+      status.className = 'status ok';
+    } else {
+      throw new Error(result.error);
+    }
+  } catch (e) {
+    status.textContent = '❌ Erro: ' + e.message;
+    status.className = 'status erro';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '⬇️ Gerar e baixar contrato Word (.docx)';
+}
+</script>
+</body>
+</html>
