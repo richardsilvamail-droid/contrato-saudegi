@@ -139,7 +139,6 @@ if __name__ == '__main__':
     print(f'Servidor iniciado na porta {PORT}')
     print('='*50)
 
-    try:
-        http.server.HTTPServer(('0.0.0.0', PORT), Handler).serve_forever()
-    except KeyboardInterrupt:
-        print('\nServidor encerrado.')
+    server = http.server.HTTPServer(('0.0.0.0', PORT), Handler)
+
+    server.serve_forever()
