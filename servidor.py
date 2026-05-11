@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+f#!/usr/bin/env python3
 """
 Editor de Contrato - Saúde GI
 Rode: python servidor.py
@@ -131,16 +131,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
             print(f'  ❌ Erro: {e}')
 
 if __name__ == '__main__':
-    PORT = 8080
+    PORT = int(os.environ.get("PORT", 8080))
+
     print('='*50)
-    print('  Editor de Contrato — Saúde GI')
+    print('Editor de Contrato — Saúde GI')
     print('='*50)
-    print(f'  Servidor iniciado em http://localhost:{PORT}')
-    print('  Abrindo o navegador...')
-    print('  Para encerrar: pressione Ctrl+C')
+    print(f'Servidor iniciado na porta {PORT}')
     print('='*50)
-    webbrowser.open(f'http://localhost:{PORT}')
+
     try:
-        http.server.HTTPServer(('localhost', PORT), Handler).serve_forever()
+        http.server.HTTPServer(('0.0.0.0', PORT), Handler).serve_forever()
     except KeyboardInterrupt:
-        print('\n  Servidor encerrado.')
+        print('\nServidor encerrado.')
